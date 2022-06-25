@@ -83,7 +83,7 @@ class CrearEventoCampus(MycroftSkill):
         self.log.info(dia_response)
 
         # Por defecto se toma el anio actual
-        fecha = dia_response + " de " + str(date.today().year)
+        fecha = str(dia_response).split("el ")[1] + " de " + str(date.today().year)
 
         # Obtencion de los numeros de dia, mes y anio
         dia_separado = formatear_fecha_introducida(dia_response)
