@@ -107,7 +107,7 @@ class CrearEventoCampus(MycroftSkill):
                 minuto_a_mostrar = "00"
             else:
                 hora = int(hora_minuto[2])
-                minuto_a_mostrar = int(hora_minuto[3])
+                minuto = int(hora_minuto[3])
 
             # Obtencion de la fecha en segundos desde epoch
             segundos = (datetime(numero_anio, numero_mes, numero_dia,
