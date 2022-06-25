@@ -83,7 +83,7 @@ class CrearEventoCampus(MycroftSkill):
         self.log.info(dia_response)
 
         # Por defecto se toma el anio actual
-        fecha = str(dia_response).split("el ")[1] + " de " + str(date.today().year)
+        fecha = dia_response + " de " + str(date.today().year)
 
         # Obtencion de los numeros de dia, mes y anio
         dia_separado = formatear_fecha_introducida(dia_response)
@@ -152,7 +152,7 @@ class CrearEventoCampus(MycroftSkill):
             time.sleep(5)
 
             # Confirmacion de la creacion del evento con su nombre, fecha y hora
-            self.speak("Evento " + texto_response + " creado el " +
+            self.speak("Evento " + texto_response + " creado " +
                        fecha + " a las " + str(hora) + ":" + minuto_a_mostrar)
 
 
