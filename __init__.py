@@ -98,7 +98,7 @@ class CrearEventoCampus(MycroftSkill):
         else:
             # Solicitud y obtencion de la hora del evento a crear
             hora_response = self.get_response('solicitarhora')
-            hora_minuto = str(hora_response).split(":")
+            hora_minuto = str(hora_response).split(" ")[2].split(":")
 
             # Obtencion de los numeros de hora y minuto
             if(len(hora_minuto) == 3):
@@ -106,8 +106,8 @@ class CrearEventoCampus(MycroftSkill):
                 minuto = 0
                 minuto_a_mostrar = "00"
             else:
-                hora = int(hora_minuto[2])
-                minuto = int(hora_minuto[3])
+                hora = int(hora_minuto[0])
+                minuto = int(hora_minuto[1])
 
             # Obtencion de la fecha en segundos desde epoch
             segundos = (datetime(numero_anio, numero_mes, numero_dia,
