@@ -102,7 +102,12 @@ class CrearEventoCampus(MycroftSkill):
 
             # Obtencion de los numeros de hora y minuto
             hora = int(hora_minuto[0])
-            minuto = int(hora_minuto[1])
+            if(len(hora_minuto) == 1):
+                minuto = 0
+                minuto_a_mostrar = "00"
+            else:
+                minuto = int(hora_minuto[1])
+                minuto_a_mostrar = str(hora_minuto[1])
 
             # Obtencion de la fecha en segundos desde epoch
             segundos = (datetime(numero_anio, numero_mes, numero_dia,
@@ -148,7 +153,7 @@ class CrearEventoCampus(MycroftSkill):
 
             # Confirmacion de la creacion del evento con su nombre, fecha y hora
             self.speak("Evento " + texto_response + " creado " +
-                       fecha + " a las " + str(hora) + ":" + str(minuto))
+                       fecha + " a las " + str(hora) + ":" + minuto_a_mostrar)
 
 
 def create_skill():
