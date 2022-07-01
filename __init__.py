@@ -1,13 +1,18 @@
+import json
 import time
-
+from datetime import date
+from datetime import datetime
 
 from mycroft import MycroftSkill, intent_file_handler
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from datetime import datetime
-from datetime import date
 from selenium.webdriver.support.ui import Select
+
+# Fichero JSON donde almacenar la informacion
+ficheroJSON = '/home/serggom/scraping/datos.json'
+contenidoJSON = {'asignaturas': [], 'usuario': [], 'eventos': [], 'siguiente_evento': [], 'eventos_hoy': [],
+                 'numero_mensajes': []}
 
 
 def inicio_sesion(self):
@@ -19,8 +24,6 @@ def inicio_sesion(self):
     options = Options()
     options.headless = True
     options.add_argument("--windows-size=1920,1200")
-
-    self.speak("Creando el evento...")
 
     # Acceso a pagina
     driver = webdriver.Chrome(options=options)
@@ -41,7 +44,7 @@ def inicio_sesion(self):
 
 
 def mesANumero(x):  # Funcion que devuelve el numero de mes introducido de manera escrita
-    return{
+    return {
         'enero': "01",
         'febrero': "02",
         'marzo': "03",
@@ -82,17 +85,18 @@ class CrearEventoCampus(MycroftSkill):
         dia_response = self.get_response('solicitardia')
         self.log.info(dia_response)
 
-        # Por defecto se toma el anio actual
-        fecha = dia_response + " de " + str(date.today().year)
-
         # Obtencion de los numeros de dia, mes y anio
         dia_separado = formatear_fecha_introducida(dia_response)
         numero_dia = int(dia_separado[0])
         numero_mes = int(dia_separado[1])
         numero_anio = int(dia_separado[2])
 
+        # Por defecto se toma el anio actual
+        fecha = numero_dia + "/" + numero_mes + "/" + numero_anio
+
         # Comprobacion de que la fecha aun no ha pasado
-        if (numero_mes < date.today().month) or ((numero_mes == date.today().month) and (numero_dia < date.today().day)):
+        if (numero_mes < date.today().month) or (
+                (numero_mes == date.today().month) and (numero_dia < date.today().day)):
             self.speak("La fecha introducida ya ha pasado")
 
         else:
@@ -102,16 +106,27 @@ class CrearEventoCampus(MycroftSkill):
 
             # Obtencion de los numeros de hora y minuto
             hora = int(hora_minuto[0])
-            if(len(hora_minuto) == 1):
+            if len(hora_minuto) == 1:
                 minuto = 0
                 minuto_a_mostrar = "00"
             else:
                 minuto = int(hora_minuto[1])
                 minuto_a_mostrar = str(hora_minuto[1])
 
+            contenidoJSON['eventos'].append({
+                'nombre': texto_response,
+                'fecha': fecha,
+                'hora': str(hora) + ":" + minuto_a_mostrar
+            })
+
+            with open(ficheroJSON, 'a') as ficheroDatosJSON:
+                json.dump(contenidoJSON, ficheroDatosJSON, indent=4)
+
+            ficheroDatosJSON.close()
+
             # Obtencion de la fecha en segundos desde epoch
             segundos = (datetime(numero_anio, numero_mes, numero_dia,
-                        0, 0) - datetime(1970, 1, 1)).total_seconds()
+                                 0, 0) - datetime(1970, 1, 1)).total_seconds()
 
             driver = inicio_sesion(self)
 
@@ -122,7 +137,8 @@ class CrearEventoCampus(MycroftSkill):
             # Click sobre el boton de crear evento
             driver.implicitly_wait(10)
             driver.find_element(
-                by=By.XPATH, value="/html/body/div[4]/div[2]/div/div/section/div/div/div/div/div[1]/div/div[1]/button").click()
+                by=By.XPATH,
+                value="/html/body/div[4]/div[2]/div/div/section/div/div/div/div/div[1]/div/div[1]/button").click()
 
             time.sleep(5)
 
@@ -133,13 +149,15 @@ class CrearEventoCampus(MycroftSkill):
 
             # Seleccion de la hora a la que crear el evento
             selector_hora = driver.find_element(
-                by=By.XPATH, value='/html/body/div[7]/div[2]/div/div/div[2]/form/fieldset/div/div[2]/div[2]/fieldset/div/div[4]/span/select')
+                by=By.XPATH,
+                value='/html/body/div[7]/div[2]/div/div/div[2]/form/fieldset/div/div[2]/div[2]/fieldset/div/div[4]/span/select')
             drop = Select(selector_hora)
             drop.select_by_index(hora)
 
             # Seleccion del minuto a la que crear el evento
             selector_minuto = driver.find_element(
-                by=By.XPATH, value='/html/body/div[7]/div[2]/div/div/div[2]/form/fieldset/div/div[2]/div[2]/fieldset/div/div[5]/span/select')
+                by=By.XPATH,
+                value='/html/body/div[7]/div[2]/div/div/div[2]/form/fieldset/div/div[2]/div[2]/fieldset/div/div[5]/span/select')
             drop = Select(selector_minuto)
             drop.select_by_index(minuto)
 
@@ -158,4 +176,3 @@ class CrearEventoCampus(MycroftSkill):
 
 def create_skill():
     return CrearEventoCampus()
-
