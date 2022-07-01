@@ -114,7 +114,7 @@ class CrearEventoCampus(MycroftSkill):
                 minuto_a_mostrar = str(hora_minuto[1])
 
             # Confirmacion de la creacion del evento con su nombre, fecha y hora
-            self.speak("Evento " + texto_response + " creado " +
+            self.speak("Evento " + texto_response + " creado el " +
                        fecha + " a las " + str(hora) + ":" + minuto_a_mostrar)
 
             # Obtencion de la fecha en segundos desde epoch
