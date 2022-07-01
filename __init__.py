@@ -113,16 +113,9 @@ class CrearEventoCampus(MycroftSkill):
                 minuto = int(hora_minuto[1])
                 minuto_a_mostrar = str(hora_minuto[1])
 
-            contenidoJSON['eventos'].append({
-                'nombre': texto_response,
-                'fecha': fecha,
-                'hora': str(hora) + ":" + minuto_a_mostrar
-            })
-
-            with open(ficheroJSON, 'a') as ficheroDatosJSON:
-                json.dump(contenidoJSON, ficheroDatosJSON, indent=4)
-
-            ficheroDatosJSON.close()
+            # Confirmacion de la creacion del evento con su nombre, fecha y hora
+            self.speak("Evento " + texto_response + " creado " +
+                       fecha + " a las " + str(hora) + ":" + minuto_a_mostrar)
 
             # Obtencion de la fecha en segundos desde epoch
             segundos = (datetime(numero_anio, numero_mes, numero_dia,
@@ -168,10 +161,6 @@ class CrearEventoCampus(MycroftSkill):
                 by=By.XPATH, value="/html/body/div[7]/div[2]/div/div/div[3]/button").click()
 
             time.sleep(5)
-
-            # Confirmacion de la creacion del evento con su nombre, fecha y hora
-            self.speak("Evento " + texto_response + " creado " +
-                       fecha + " a las " + str(hora) + ":" + minuto_a_mostrar)
 
 
 def create_skill():
