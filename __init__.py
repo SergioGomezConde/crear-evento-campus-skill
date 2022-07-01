@@ -92,7 +92,7 @@ class CrearEventoCampus(MycroftSkill):
         numero_anio = int(dia_separado[2])
 
         # Por defecto se toma el anio actual
-        fecha = numero_dia + "/" + mes_a_numero(numero_mes) + "/" + numero_anio
+        fecha = str(numero_dia) + "/" + str(numero_mes) + "/" + str(numero_anio)
 
         # Comprobacion de que la fecha aun no ha pasado
         if (numero_mes < date.today().month) or (
