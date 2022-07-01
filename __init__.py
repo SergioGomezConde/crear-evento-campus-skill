@@ -118,7 +118,7 @@ class CrearEventoCampus(MycroftSkill):
                 'hora': str(hora) + ":" + minuto_a_mostrar
             })
 
-            with open(ficheroJSON, 'a') as ficheroDatosJSON:
+            with open(ficheroJSON, 'w') as ficheroDatosJSON:
                 json.dump(contenidoJSON, ficheroDatosJSON, indent=4)
 
             ficheroDatosJSON.close()
