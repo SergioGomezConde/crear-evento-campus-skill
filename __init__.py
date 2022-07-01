@@ -10,9 +10,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 
 # Fichero JSON donde almacenar la informacion
-ficheroJSON = '/home/serggom/scraping/datos.json'
-contenidoJSON = {'asignaturas': [], 'usuario': [], 'eventos': [], 'siguiente_evento': [], 'eventos_hoy': [],
-                 'numero_mensajes': []}
+ficheroJSON = '/home/serggom/scraping/evento_a_crear.json'
+contenidoJSON = {'evento': []}
 
 
 def inicio_sesion(self):
@@ -112,6 +111,17 @@ class CrearEventoCampus(MycroftSkill):
             else:
                 minuto = int(hora_minuto[1])
                 minuto_a_mostrar = str(hora_minuto[1])
+
+            contenidoJSON['eventos_hoy'].append({
+                'nombre': texto_response,
+                'fecha': fecha,
+                'hora': str(hora) + ":" + minuto_a_mostrar
+            })
+
+            with open(ficheroJSON, 'a') as ficheroDatosJSON:
+                json.dump(contenidoJSON, ficheroDatosJSON, indent=4)
+
+            ficheroDatosJSON.close()
 
             # Confirmacion de la creacion del evento con su nombre, fecha y hora
             self.speak("Evento " + texto_response + " creado el " +
