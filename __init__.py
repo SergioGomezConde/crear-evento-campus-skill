@@ -112,7 +112,7 @@ class CrearEventoCampus(MycroftSkill):
                 minuto = int(hora_minuto[1])
                 minuto_a_mostrar = str(hora_minuto[1])
 
-            contenidoJSON['eventos_hoy'].append({
+            contenidoJSON['evento'].append({
                 'nombre': texto_response,
                 'fecha': fecha,
                 'hora': str(hora) + ":" + minuto_a_mostrar
