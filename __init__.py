@@ -43,7 +43,7 @@ def inicio_sesion(self):
     return driver
 
 
-def mesANumero(x):  # Funcion que devuelve el numero de mes introducido de manera escrita
+def mes_a_numero(x):  # Funcion que devuelve el numero de mes introducido de manera escrita
     return {
         'enero': "01",
         'febrero': "02",
@@ -63,7 +63,7 @@ def mesANumero(x):  # Funcion que devuelve el numero de mes introducido de maner
 # Funcion que devuelve una lista con dia, mes y anio
 def formatear_fecha_introducida(dia_a_formatear):
     dia_en_numero = str(dia_a_formatear).split(" ")[1]
-    mes_en_numero = mesANumero(str(dia_a_formatear).split(" ")[3])
+    mes_en_numero = mes_a_numero(str(dia_a_formatear).split(" ")[3])
 
     dia_separado = [dia_en_numero, mes_en_numero, str(date.today().year)]
 
@@ -92,7 +92,7 @@ class CrearEventoCampus(MycroftSkill):
         numero_anio = int(dia_separado[2])
 
         # Por defecto se toma el anio actual
-        fecha = numero_dia + "/" + numero_mes + "/" + numero_anio
+        fecha = numero_dia + "/" + mes_a_numero(numero_mes) + "/" + numero_anio
 
         # Comprobacion de que la fecha aun no ha pasado
         if (numero_mes < date.today().month) or (
