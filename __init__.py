@@ -112,17 +112,6 @@ class CrearEventoCampus(MycroftSkill):
                 minuto = int(hora_minuto[1])
                 minuto_a_mostrar = str(hora_minuto[1])
 
-            contenidoJSON['evento'].append({
-                'nombre': texto_response,
-                'fecha': fecha,
-                'hora': str(hora) + ":" + minuto_a_mostrar
-            })
-
-            with open(ficheroJSON, 'w') as ficheroDatosJSON:
-                json.dump(contenidoJSON, ficheroDatosJSON, indent=4)
-
-            ficheroDatosJSON.close()
-
             # Confirmacion de la creacion del evento con su nombre, fecha y hora
             self.speak("Evento " + texto_response + " creado el " +
                        fecha + " a las " + str(hora) + ":" + minuto_a_mostrar)
